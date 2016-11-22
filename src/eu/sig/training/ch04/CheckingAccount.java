@@ -1,7 +1,5 @@
 package eu.sig.training.ch04;
 
-import eu.sig.training.ch04.Money;
-
 // tag::CheckingAccount[]
 public class CheckingAccount {
     private int transferLimit = 100;
@@ -13,11 +11,12 @@ public class CheckingAccount {
             throw new BusinessException("Limit exceeded!");
         }
         // 2. Assuming result is 9-digit bank account number, validate 11-test:
-        int sum = 0;
-        for (int i = 0; i < counterAccount.length(); i++) {
-            sum = sum + (9-i) * Character.getNumericValue(
-                counterAccount.charAt(i));
-        }
+        int sum = ChecksumUtils.createSum(counterAccount);
+
+        return createTransfer(counterAccount, amount, sum);
+    }
+
+    private Transfer createTransfer(String counterAccount, Money amount, int sum) throws BusinessException {
         if (sum % 11 == 0) {
             // 3. Look up counter account and make transfer object:
             CheckingAccount acct = Accounts.findAcctByNumber(counterAccount);

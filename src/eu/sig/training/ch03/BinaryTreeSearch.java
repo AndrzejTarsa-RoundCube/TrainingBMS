@@ -1,10 +1,7 @@
 package eu.sig.training.ch03;
 
-import eu.sig.training.ch03.TreeException;
-import eu.sig.training.ch03.BinaryTreeNode;
-
 public class BinaryTreeSearch {
-	
+
     // tag::calculateDepth[]
     public static int calculateDepth(BinaryTreeNode<Integer> node, int nodeValue) {
         if(node == null){
@@ -14,21 +11,22 @@ public class BinaryTreeSearch {
         if (node.getValue() == nodeValue) {
             return depth;
         } else {
-            if (nodeValue < node.getValue()) {
-                BinaryTreeNode<Integer> left = node.getLeft();
-                if (left == null) {
-                    throw new TreeException("Value not found in tree!");
-                } else {
-                    return 1 + calculateDepth(left, nodeValue);
-                }
-            } else {
-                BinaryTreeNode<Integer> right = node.getRight();
-                if (right == null) {
-                    throw new TreeException("Value not found in tree!");
-                } else {
-                    return 1 + calculateDepth(right, nodeValue);
-                }
-            }
+            return calculateDepthInNode(node, nodeValue);
+        }
+    }
+
+    private static int calculateDepthInNode(BinaryTreeNode<Integer> node, int nodeValue) throws TreeException {
+        final BinaryTreeNode<Integer> nextNode;
+        if (nodeValue < node.getValue()) {
+            nextNode = node.getLeft();
+        } else {
+            nextNode = node.getRight();
+        }
+
+        if (nextNode == null) {
+            throw new TreeException("Value not found in tree!");
+        } else {
+            return 1 + calculateDepth(node, nodeValue);
         }
     }
     // end::calculateDepth[]
